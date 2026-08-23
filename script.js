@@ -90,42 +90,136 @@ tiltCards.forEach(card => {
   });
 });
 
-const showcaseModal = document.getElementById("showcaseModal");
-const showcaseModalImage = document.getElementById("showcaseModalImage");
-const showcaseModalTitle = document.getElementById("showcaseModalTitle");
-const showcaseCards = document.querySelectorAll(".showcase-card");
+const navLinks = [...document.querySelectorAll(".nav-links a[href^='#']")];
+const navIndicator = document.querySelector(".nav-active-line");
+const navSectionIds = navLinks.map(link => link.getAttribute("href").slice(1));
+const navSections = navSectionIds
+  .map(id => document.getElementById(id))
+  .filter(Boolean);
 
-function closeShowcaseModal() {
-  if (!showcaseModal) return;
-  showcaseModal.classList.remove("open");
-  showcaseModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("showcase-open");
+let activeNavLink = document.querySelector(".nav-links a.active") || navLinks[0];
+let navScrollLock = false;
+let navScrollTarget = null;
+
+function positionNavIndicator() {
+  if (!navIndicator || !activeNavLink) return;
+
+  const linksBox = activeNavLink.parentElement.getBoundingClientRect();
+  const linkBox = activeNavLink.getBoundingClientRect();
+  const width = Math.max(24, Math.min(32, linkBox.width * 0.55));
+  const x = linkBox.left - linksBox.left + (linkBox.width - width) / 2;
+
+  navIndicator.style.width = `${width}px`;
+  navIndicator.style.transform = `translateX(${x}px)`;
 }
 
-showcaseCards.forEach(card => {
-  card.addEventListener("click", () => {
-    if (!showcaseModal || !showcaseModalImage || !showcaseModalTitle) return;
-    const image = card.dataset.showcaseImage;
-    const title = card.dataset.showcaseTitle || "Showcase";
-    showcaseModalImage.src = image;
-    showcaseModalImage.alt = `${title} preview`;
-    showcaseModalTitle.textContent = title;
-    showcaseModal.classList.add("open");
-    showcaseModal.setAttribute("aria-hidden", "false");
-    document.body.classList.add("showcase-open");
+function setActiveNav(link, force = false) {
+  if (!link) return;
+
+  if (!force && activeNavLink === link) {
+    positionNavIndicator();
+    return;
+  }
+
+  navLinks.forEach(item => item.classList.toggle("active", item === link));
+  activeNavLink = link;
+  // Wait one frame so the browser has the final link geometry before
+  // calculating the blue line position.
+  requestAnimationFrame(positionNavIndicator);
+}
+
+function getNavOffset() {
+  return (navbar?.getBoundingClientRect().height || 0) + 26;
+}
+
+navLinks.forEach(link => {
+  link.addEventListener("click", event => {
+    const id = link.getAttribute("href")?.slice(1);
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+
+    event.preventDefault();
+    setActiveNav(link, true);
+
+    navScrollLock = true;
+    navScrollTarget = target;
+
+    const top = Math.max(
+      0,
+      target.getBoundingClientRect().top + window.scrollY - getNavOffset()
+    );
+
+    history.replaceState(null, "", `#${id}`);
+    window.scrollTo({ top, behavior: "smooth" });
   });
 });
 
-showcaseModal?.querySelectorAll(".showcase-modal-close, .showcase-modal-backdrop").forEach(button => {
-  button.addEventListener("click", closeShowcaseModal);
-});
+function updateActiveFromScroll() {
+  if (!navSections.length) return;
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && showcaseModal?.classList.contains("open")) {
-    closeShowcaseModal();
+  if (navScrollLock && navScrollTarget) {
+    const targetTop = navScrollTarget.getBoundingClientRect().top;
+    if (Math.abs(targetTop - getNavOffset()) < 22) {
+      navScrollLock = false;
+      navScrollTarget = null;
+    } else {
+      return;
+    }
   }
+
+  /*
+   * Use viewport coordinates instead of offsetTop.
+   * This remains correct when the navbar changes between compact/full
+   * states and prevents the active tab from getting stuck.
+   */
+  const marker = getNavOffset() + Math.min(120, window.innerHeight * 0.18);
+  let current = null;
+
+  for (const section of navSections) {
+    if (section.getBoundingClientRect().top <= marker) {
+      current = section;
+    }
+  }
+
+  // Keep Projects highlighted while the user is above the first
+  // navigable section (the hero itself has no nav item).
+  if (!current) current = document.getElementById("projects");
+
+  const link = navLinks.find(
+    item => item.getAttribute("href") === `#${current?.id}`
+  );
+
+  if (link) setActiveNav(link);
+}
+
+let scrollSpyTicking = false;
+window.addEventListener("scroll", () => {
+  if (scrollSpyTicking) return;
+
+  scrollSpyTicking = true;
+  requestAnimationFrame(() => {
+    updateNavbar();
+    updateActiveFromScroll();
+    positionNavIndicator();
+    scrollSpyTicking = false;
+  });
+}, { passive: true });
+
+window.addEventListener("resize", () => {
+  positionNavIndicator();
+  updateActiveFromScroll();
+}, { passive: true });
+
+window.addEventListener("load", () => {
+  requestAnimationFrame(() => {
+    setActiveNav(activeNavLink, true);
+    updateActiveFromScroll();
+    positionNavIndicator();
+  });
 });
 
+setActiveNav(activeNavLink, true);
+updateActiveFromScroll();
 
 // Subtle, minimal constellation field behind the portfolio.
 (() => {
@@ -253,4 +347,46 @@ document.addEventListener("keydown", event => {
   resize();
   if (reduceMotion) draw(0);
   else raf = requestAnimationFrame(draw);
+})();
+
+// Quiet ambient background music. Browsers block autoplay until the first
+// user gesture, so the site tries to start softly and falls back to the
+// first interaction. The visible control always lets the visitor pause it.
+(() => {
+  const audio = document.getElementById("ambient-audio");
+  const toggle = document.getElementById("music-toggle");
+  if (!audio || !toggle) return;
+
+  audio.volume = 0.10;
+
+  const sync = () => {
+    const playing = !audio.paused;
+    toggle.classList.toggle("is-playing", playing);
+    toggle.setAttribute("aria-pressed", String(playing));
+    toggle.setAttribute("aria-label", playing ? "Pause background music" : "Play background music");
+  };
+
+  const start = async () => {
+    try {
+      await audio.play();
+      sync();
+    } catch (_) {
+      sync();
+    }
+  };
+
+  toggle.addEventListener("click", async () => {
+    if (audio.paused) await start();
+    else { audio.pause(); sync(); }
+  });
+
+  ["pointerdown", "keydown"].forEach(type => {
+    document.addEventListener(type, () => {
+      if (audio.paused && !audio.dataset.dismissed) start();
+    }, { once: true, passive: true });
+  });
+
+  audio.addEventListener("play", sync);
+  audio.addEventListener("pause", sync);
+  start();
 })();
