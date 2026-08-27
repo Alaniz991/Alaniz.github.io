@@ -36,19 +36,21 @@ window.addEventListener("load", () => {
 });
 
 const navbar = document.querySelector(".navbar");
-let navbarCompact = false;
 let navbarTicking = false;
 
 function updateNavbar() {
   if (!navbar) return;
 
-  // Fixed positioning keeps the navbar attached to the viewport, so changing
-  // its size can never affect scroll position or make it flicker/disappear.
-  const shouldCompact = window.scrollY > 90;
-  if (shouldCompact !== navbarCompact) {
-    navbarCompact = shouldCompact;
-    navbar.classList.toggle("navbar-compact", navbarCompact);
-  }
+  // Use a continuous 0→1 progress value so the navbar gently reorganizes
+  // as the page moves instead of snapping between two layouts.
+  const progress = Math.min(1, Math.max(0, window.scrollY / 420));
+  const shift = progress * 76;
+  const scale = 1 - progress * 0.075;
+
+  navbar.style.setProperty("--nav-progress", progress.toFixed(3));
+  navbar.style.setProperty("--nav-shift", `${shift.toFixed(1)}px`);
+  navbar.style.setProperty("--nav-scale", scale.toFixed(3));
+  navbar.classList.toggle("is-scrolling", progress > 0.04);
 }
 
 window.addEventListener("scroll", () => {
@@ -60,6 +62,7 @@ window.addEventListener("scroll", () => {
   });
 }, { passive: true });
 
+window.addEventListener("resize", updateNavbar, { passive: true });
 updateNavbar();
 
 const pageGlow = document.querySelector(".page-glow");
@@ -96,6 +99,14 @@ const navSectionIds = navLinks.map(link => link.getAttribute("href").slice(1));
 const navSections = navSectionIds
   .map(id => document.getElementById(id))
   .filter(Boolean);
+
+// The nav menu lists links in a different order than the sections actually
+// appear on the page, so anything that needs "which section is last on the
+// page" has to sort by real position rather than trust the menu order.
+const navSectionsByPosition = [...navSections].sort(
+  (a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top
+);
+const lastPageSection = navSectionsByPosition[navSectionsByPosition.length - 1];
 
 let activeNavLink = document.querySelector(".nav-links a.active") || navLinks[0];
 let navScrollLock = false;
@@ -174,9 +185,15 @@ function updateActiveFromScroll() {
    */
   const marker = getNavOffset() + Math.min(120, window.innerHeight * 0.18);
   let current = null;
+  let currentTop = -Infinity;
 
   for (const section of navSections) {
-    if (section.getBoundingClientRect().top <= marker) {
+    const top = section.getBoundingClientRect().top;
+    // Pick the section whose top is closest to (but still above) the
+    // marker, based on actual position on the page — not the order the
+    // links happen to appear in the nav menu, since those don't match.
+    if (top <= marker && top > currentTop) {
+      currentTop = top;
       current = section;
     }
   }
@@ -184,6 +201,14 @@ function updateActiveFromScroll() {
   // Keep Projects highlighted while the user is above the first
   // navigable section (the hero itself has no nav item).
   if (!current) current = document.getElementById("projects");
+
+  // Near the bottom of the page the last section may never reach the
+  // marker line (there's no more room to scroll past it), so force it
+  // active once the user has essentially reached the end of the page.
+  const nearBottom =
+    Math.ceil(window.scrollY + window.innerHeight) >=
+    document.documentElement.scrollHeight - 4;
+  if (nearBottom && lastPageSection) current = lastPageSection;
 
   const link = navLinks.find(
     item => item.getAttribute("href") === `#${current?.id}`
@@ -220,6 +245,84 @@ window.addEventListener("load", () => {
 
 setActiveNav(activeNavLink, true);
 updateActiveFromScroll();
+
+// Showcase category tabs: filter the grid by data-category without
+// touching the lightbox behavior set up below.
+(() => {
+  const tabs = document.querySelectorAll(".showcase-tab");
+  const cards = document.querySelectorAll(".showcase-card");
+  if (!tabs.length || !cards.length) return;
+
+  function applyFilter(category) {
+    cards.forEach(card => {
+      const matches = category === "all" || card.dataset.category === category;
+      card.classList.toggle("is-hidden", !matches);
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(item => {
+        item.classList.toggle("active", item === tab);
+        item.setAttribute("aria-selected", item === tab ? "true" : "false");
+      });
+      applyFilter(tab.dataset.category);
+    });
+  });
+})();
+
+// Showcase lightbox: clicking any showcase tile opens the selected image
+// in a large, focused preview. Escape and the backdrop close it.
+(() => {
+  const cards = document.querySelectorAll(".showcase-card");
+  if (!cards.length) return;
+
+  const modal = document.createElement("div");
+  modal.className = "showcase-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+  modal.setAttribute("aria-label", "Showcase preview");
+  modal.innerHTML = `
+    <button class="showcase-modal-backdrop" type="button" aria-label="Close preview"></button>
+    <div class="showcase-modal-content" role="document">
+      <button class="showcase-modal-close" type="button" aria-label="Close preview">×</button>
+      <img class="showcase-modal-image" src="" alt="">
+      <h3 class="showcase-modal-title"></h3>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  const image = modal.querySelector(".showcase-modal-image");
+  const title = modal.querySelector(".showcase-modal-title");
+  const closeButtons = modal.querySelectorAll(".showcase-modal-close, .showcase-modal-backdrop");
+  let lastTrigger = null;
+
+  function close() {
+    modal.classList.remove("open");
+    document.body.classList.remove("showcase-open");
+    image.removeAttribute("src");
+    if (lastTrigger) lastTrigger.focus();
+  }
+
+  function open(card) {
+    const source = card.dataset.showcaseImage || card.querySelector("img")?.src;
+    if (!source) return;
+
+    lastTrigger = card;
+    image.src = source;
+    image.alt = card.querySelector("img")?.alt || card.dataset.showcaseTitle || "Showcase preview";
+    title.textContent = card.dataset.showcaseTitle || "Showcase";
+    modal.classList.add("open");
+    document.body.classList.add("showcase-open");
+    requestAnimationFrame(() => modal.querySelector(".showcase-modal-close")?.focus());
+  }
+
+  cards.forEach(card => card.addEventListener("click", () => open(card)));
+  closeButtons.forEach(button => button.addEventListener("click", close));
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && modal.classList.contains("open")) close();
+  });
+})();
 
 // Subtle, minimal constellation field behind the portfolio.
 (() => {

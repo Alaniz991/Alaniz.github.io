@@ -94,7 +94,7 @@ img {
 
 .hero {
   min-height: 100vh;
-  padding: 126px 8% 80px;
+  padding: 92px 8% 80px;
   position: relative;
 }
 
@@ -116,61 +116,20 @@ img {
   background: rgba(12, 7, 16, 0.72);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
-  transition: padding .28s ease, border-radius .28s ease, background .28s ease, box-shadow .28s ease, left .28s ease, right .28s ease;
+  --nav-progress: 0;
+  --nav-shift: 0px;
+  --nav-scale: 1;
+  transform: translate3d(var(--nav-shift), 0, 0) scale(var(--nav-scale));
+  transform-origin: center top;
+  transition: transform .22s cubic-bezier(.22,.8,.22,1), background .22s ease, box-shadow .22s ease;
+  will-change: transform;
 }
 
-/* On scroll the navbar stays visible, but becomes compact. Hovering it restores the full version. */
-.navbar.navbar-compact {
-  padding: 8px 12px;
-  border-radius: 14px;
-  background: rgba(8, 10, 15, 0.86);
-  box-shadow: 0 14px 45px rgba(0, 0, 0, .28);
-}
-
-.navbar.navbar-compact .logo-text {
-  font-size: 1rem;
-}
-
-.navbar.navbar-compact .logo-subtitle {
-  margin-top: 3px;
-  font-size: .5rem;
-}
-
-.navbar.navbar-compact .nav-links a {
-  padding: 7px 10px;
-}
-
-.navbar.navbar-compact .studio-badge {
-  padding: 6px 10px;
-}
-
-.navbar.navbar-compact:hover,
-.navbar.navbar-compact:focus-within {
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(12, 7, 16, 0.92);
-  box-shadow: var(--shadow);
-}
-
-.navbar.navbar-compact:hover .logo-text,
-.navbar.navbar-compact:focus-within .logo-text {
-  font-size: 1.12rem;
-}
-
-.navbar.navbar-compact:hover .logo-subtitle,
-.navbar.navbar-compact:focus-within .logo-subtitle {
-  margin-top: 5px;
-  font-size: .58rem;
-}
-
-.navbar.navbar-compact:hover .nav-links a,
-.navbar.navbar-compact:focus-within .nav-links a {
-  padding: 9px 12px;
-}
-
-.navbar.navbar-compact:hover .studio-badge,
-.navbar.navbar-compact:focus-within .studio-badge {
-  padding: 8px 14px;
+/* The navbar changes continuously while scrolling instead of jumping between
+   two fixed sizes. The JS only updates the progress value. */
+.navbar.is-scrolling {
+  background: rgba(8, 10, 15, .82);
+  box-shadow: 0 16px 50px rgba(0,0,0,.30);
 }
 
 .logo {
@@ -241,6 +200,10 @@ img {
 .logo-img {
   width: 30px;
   height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .nav-links {
@@ -322,7 +285,7 @@ img {
   padding-top: 38px;
 }
 
-.hero-card-intro {
+.hero-card-intro.profile-card {
   position: relative;
   z-index: 5;
   width: min(650px, 100%);
@@ -402,6 +365,27 @@ img {
 
 .profile-copy {
   min-width: 0;
+}
+
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-name-row .profile-brand-logo {
+  display: block;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, .58);
+  background: #080d14;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.03),
+    0 12px 28px rgba(0,0,0,.34),
+    0 0 24px rgba(34,211,238,.08);
 }
 
 .hero-card-intro h2 {
@@ -660,7 +644,23 @@ h1 .accent-word {
   display: grid;
   grid-template-columns: .9fr 1.1fr;
   gap: 50px;
-  align-items: start;
+  align-items: center;
+}
+
+.about-image-slot {
+  min-height: 380px;
+  display: grid;
+  place-items: center;
+}
+
+.about-render {
+  width: 112%;
+  max-width: 500px;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 28px 40px rgba(0,0,0,.48));
+  animation: modelFloat 6s ease-in-out infinite;
 }
 
 .about p:last-child,
@@ -967,7 +967,7 @@ body.js-enabled .reveal.visible {
     margin-bottom: 22px;
   }
 
-  .hero-card-intro {
+  .hero-card-intro.profile-card {
     width: min(430px, 100%);
     margin: 0 auto 28px;
     text-align: left;
@@ -1059,6 +1059,45 @@ body.js-enabled .reveal.visible {
   }
 }
 /* Showcase gallery */
+.showcase-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 22px 0 26px;
+}
+
+.showcase-tab {
+  appearance: none;
+  cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 700;
+  letter-spacing: .2px;
+  transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.showcase-tab:hover {
+  color: var(--text);
+  border-color: rgba(34, 211, 238, 0.4);
+  transform: translateY(-1px);
+}
+
+.showcase-tab.active {
+  color: #04141a;
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  box-shadow: 0 8px 26px rgba(34, 211, 238, 0.22);
+}
+
+.showcase-card.is-hidden {
+  display: none;
+}
+
 .showcase-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1255,8 +1294,13 @@ body.showcase-open {
   background: var(--accent-2);
   box-shadow: 0 0 10px rgba(34, 211, 238, 0.55);
   pointer-events: none;
+  opacity: 0;
   transform: translateX(0);
-  transition: transform .28s cubic-bezier(.2,.8,.2,1), width .28s ease;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), width .28s ease, opacity .3s ease;
+}
+
+.navbar.is-scrolling .nav-active-line {
+  opacity: 1;
 }
 
 /* ===== 3D renders integrated into the visual design ===== */
@@ -1423,35 +1467,326 @@ body.showcase-open {
 }
 
 
-/* ===== NAV FIX: no layout shift when hovering the name/logo =====
-   The compact navbar must keep the exact same geometry whether the
-   pointer is over the logo, links, or studio badge.
-*/
-.navbar.navbar-compact:hover,
-.navbar.navbar-compact:focus-within {
-  padding: 8px 12px;
-  border-radius: 14px;
-  background: rgba(8, 10, 15, 0.86);
-  box-shadow: 0 14px 45px rgba(0, 0, 0, .28);
+/* About model: centered and more prominent without pushing the text away. */
+@media (min-width: 921px) {
+  .about-image-slot {
+    min-height: 430px;
+  }
+
+  .about-render {
+    width: 118%;
+    max-width: 520px;
+  }
 }
 
-.navbar.navbar-compact:hover .logo-text,
-.navbar.navbar-compact:focus-within .logo-text {
-  font-size: 1rem;
+@media (max-width: 920px) {
+  .about-image-slot {
+    min-height: 330px;
+  }
+
+  .about-render {
+    width: min(92vw, 430px);
+    max-width: none;
+  }
 }
 
-.navbar.navbar-compact:hover .logo-subtitle,
-.navbar.navbar-compact:focus-within .logo-subtitle {
-  margin-top: 3px;
-  font-size: .5rem;
+
+/* ===== Contact refresh ===== */
+.contact {
+  position: relative;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.navbar.navbar-compact:hover .nav-links a,
-.navbar.navbar-compact:focus-within .nav-links a {
-  padding: 7px 10px;
+.contact h2 {
+  max-width: 820px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.navbar.navbar-compact:hover .studio-badge,
-.navbar.navbar-compact:focus-within .studio-badge {
-  padding: 6px 10px;
+.contact > p:not(.section-tag) {
+  max-width: 700px;
+  color: var(--muted);
+}
+
+.contact-links {
+  align-items: stretch;
+  margin-top: 10px;
+}
+
+.contact-links a {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* ===== Mobile polish ===== */
+@media (max-width: 768px) {
+  .navbar {
+    top: 8px;
+    left: 10px;
+    right: 10px;
+    padding: 11px 12px;
+    gap: 10px;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    transform: none !important;
+  }
+
+  .navbar .logo {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 1.18rem;
+  }
+
+  .logo-subtitle {
+    font-size: .43rem;
+    letter-spacing: .7px;
+  }
+
+  .studio-badge {
+    flex: 0 0 auto;
+    padding: 5px 8px;
+    gap: 6px;
+    font-size: .58rem;
+  }
+
+  .studio-badge img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 4px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-links a {
+    flex: 0 0 auto;
+    padding: 7px 9px;
+    font-size: .72rem;
+    white-space: nowrap;
+  }
+
+  .nav-active-line {
+    display: none;
+  }
+
+  .hero {
+    padding: 112px 16px 48px;
+  }
+
+  .hero-content {
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .hero-card-intro.profile-card {
+    width: 100%;
+    min-height: 0;
+    padding: 16px;
+    gap: 14px;
+    border-radius: 17px;
+  }
+
+  .hero-card-intro img {
+    width: 68px;
+    height: 68px;
+    border-radius: 12px;
+  }
+
+  .profile-name-row {
+    gap: 10px;
+  }
+
+  .profile-name-row .profile-brand-logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 10px;
+  }
+
+  .hero-card-intro h2 {
+    font-size: 1.65rem;
+    letter-spacing: -1px;
+  }
+
+  .hero-card-intro p {
+    font-size: .68rem;
+    line-height: 1.45;
+    white-space: normal;
+  }
+
+  .profile-socials {
+    margin-top: 9px;
+    gap: 7px;
+  }
+
+  .profile-socials a {
+    width: 32px;
+    height: 32px;
+  }
+
+  .hero-text {
+    margin: 18px 0 24px;
+    line-height: 1.55;
+  }
+
+  .hero-visual {
+    min-height: 420px;
+  }
+
+  .model-stage {
+    width: 100%;
+    height: 420px;
+  }
+
+  .model-render-main {
+    width: 86%;
+    height: 90%;
+  }
+
+  .model-render-green {
+    transform: translate(64px, 50px) rotate(4deg) scale(.72);
+  }
+
+  .model-render-red {
+    transform: translate(-64px, 56px) rotate(-4deg) scale(.70);
+  }
+
+  .model-orbit-left,
+  .model-orbit-right {
+    width: 280px;
+    height: 120px;
+  }
+
+  .hero-buttons {
+    gap: 10px;
+  }
+
+  .btn {
+    max-width: none;
+    padding: 13px 16px;
+  }
+
+  .stats {
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .stats div {
+    padding: 14px;
+  }
+
+  .section {
+    padding: 58px 16px;
+  }
+
+  .section h2 {
+    font-size: clamp(1.75rem, 8vw, 2.2rem);
+    line-height: 1.08;
+  }
+
+  .contact {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .contact > p:not(.section-tag) {
+    font-size: .94rem;
+    line-height: 1.6;
+  }
+
+  .contact-links {
+    width: 100%;
+    gap: 9px;
+  }
+
+  .contact-links a {
+    width: 100%;
+    max-width: none;
+    min-height: 50px;
+    padding: 12px 14px;
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+  }
+
+  footer {
+    padding: 26px 16px;
+    font-size: .78rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar {
+    padding: 9px 10px;
+  }
+
+  .navbar .logo {
+    font-size: 1.05rem;
+  }
+
+  .logo-subtitle {
+    display: none;
+  }
+
+  .studio-badge {
+    font-size: .52rem;
+  }
+
+  .studio-text {
+    line-height: 1.05;
+  }
+
+  .hero {
+    padding-top: 106px;
+  }
+
+  .hero-card-intro.profile-card {
+    padding: 13px;
+  }
+
+  .hero-card-intro h2 {
+    font-size: 1.45rem;
+  }
+
+  .hero-card-intro p {
+    font-size: .61rem;
+  }
+
+  .hero-visual {
+    min-height: 370px;
+  }
+
+  .model-stage {
+    height: 370px;
+  }
+
+  .model-render-main {
+    width: 92%;
+    height: 86%;
+  }
+
+  .model-render-green {
+    transform: translate(52px, 52px) rotate(4deg) scale(.62);
+  }
+
+  .model-render-red {
+    transform: translate(-52px, 58px) rotate(-4deg) scale(.60);
+  }
 }
