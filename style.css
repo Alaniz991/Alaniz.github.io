@@ -1790,3 +1790,139 @@ body.showcase-open {
     transform: translate(-52px, 58px) rotate(-4deg) scale(.60);
   }
 }
+
+
+/* ===== Final mobile centering pass ===== */
+@media (max-width: 768px) {
+  .hero,
+  .section {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-content,
+  .hero-left,
+  .hero-text,
+  .hero-buttons,
+  .stats,
+  .about,
+  .section-heading,
+  .skills-grid,
+  .projects-grid,
+  .timeline,
+  .showcase-grid,
+  .contact,
+  .contact-links {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-content,
+  .hero-left,
+  .about,
+  .section-heading,
+  .contact {
+    align-items: center;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-left {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero-card-intro.profile-card,
+  .hero-card,
+  .stats,
+  .skills-grid,
+  .projects-grid,
+  .timeline,
+  .showcase-grid {
+    max-width: 430px;
+  }
+
+  .hero-text {
+    max-width: 430px;
+  }
+
+  .hero-buttons {
+    max-width: 430px;
+    justify-content: center;
+  }
+
+  .about-image-slot {
+    width: 100%;
+    display: grid;
+    place-items: center;
+  }
+
+  .about-render {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-tag {
+    text-align: center;
+    transform: none;
+  }
+
+  .section h2,
+  .section-intro,
+  .contact > p:not(.section-tag) {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .skills-grid,
+  .projects-grid,
+  .timeline {
+    justify-items: center;
+  }
+
+  .skill-card,
+  .project-card,
+  .timeline div {
+    width: 100%;
+  }
+
+  .showcase-tabs {
+    justify-content: center;
+  }
+
+  .contact-links {
+    align-items: center;
+  }
+
+  .contact-links a {
+    width: min(100%, 430px);
+  }
+}
+
+@media (max-width: 420px) {
+  .hero,
+  .section {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero-card-intro.profile-card,
+  .hero-card,
+  .stats,
+  .skills-grid,
+  .projects-grid,
+  .timeline,
+  .showcase-grid,
+  .hero-text,
+  .hero-buttons {
+    max-width: 100%;
+  }
+}
