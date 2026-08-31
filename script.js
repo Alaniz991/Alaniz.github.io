@@ -198,9 +198,8 @@ function updateActiveFromScroll() {
     }
   }
 
-  // Keep Projects highlighted while the user is above the first
-  // navigable section (the hero itself has no nav item).
-  if (!current) current = document.getElementById("projects");
+  // If the user is above the first section marker, keep Home highlighted.
+  if (!current) current = document.getElementById("home");
 
   // Near the bottom of the page the last section may never reach the
   // marker line (there's no more room to scroll past it), so force it
@@ -246,12 +245,40 @@ window.addEventListener("load", () => {
 setActiveNav(activeNavLink, true);
 updateActiveFromScroll();
 
-// Showcase category tabs: filter the grid by data-category without
-// touching the lightbox behavior set up below.
+// Showcase: keep the main section compact with a looping ribbon, and reveal
+// the full categorized gallery only when the visitor asks for more.
 (() => {
-  const tabs = document.querySelectorAll(".showcase-tab");
-  const cards = document.querySelectorAll(".showcase-card");
-  if (!tabs.length || !cards.length) return;
+  const expanded = document.getElementById("showcase-expanded");
+  const track = document.getElementById("showcase-track");
+  const moreButton = document.getElementById("showcase-more");
+  const collapseButton = document.getElementById("showcase-collapse");
+  if (!expanded || !track || !moreButton) return;
+
+  const sourceCards = [...expanded.querySelectorAll(".showcase-grid .showcase-card")];
+  if (!sourceCards.length) return;
+
+  // Duplicate the set once so the CSS animation can loop seamlessly.
+  const firstSet = sourceCards.map(card => card.cloneNode(true));
+  const secondSet = sourceCards.map(card => card.cloneNode(true));
+  [...firstSet, ...secondSet].forEach(card => {
+    card.setAttribute("tabindex", "0");
+    track.appendChild(card);
+  });
+
+  function setExpanded(open) {
+    expanded.hidden = !open;
+    moreButton.setAttribute("aria-expanded", String(open));
+    moreButton.querySelector("span:first-child").textContent = open ? "Hide Categories" : "View More";
+    if (open) {
+      expanded.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }
+
+  moreButton.addEventListener("click", () => setExpanded(!moreButton.getAttribute("aria-expanded") || moreButton.getAttribute("aria-expanded") === "false"));
+  collapseButton?.addEventListener("click", () => setExpanded(false));
+
+  const tabs = expanded.querySelectorAll(".showcase-tab");
+  const cards = expanded.querySelectorAll(".showcase-grid .showcase-card");
 
   function applyFilter(category) {
     cards.forEach(card => {
@@ -346,6 +373,7 @@ updateActiveFromScroll();
     mouseRadius: 165,
     hoverRadius: 135
   };
+  const linkDistanceSq = settings.linkDistance * settings.linkDistance;
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -415,8 +443,9 @@ updateActiveFromScroll();
         const b = points[j];
         const dx = a.x - b.x;
         const dy = a.y - b.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist > settings.linkDistance) continue;
+        const distSq = dx * dx + dy * dy;
+        if (distSq > linkDistanceSq) continue;
+        const dist = Math.sqrt(distSq);
 
         let alpha = (1 - dist / settings.linkDistance) * 0.20;
         const mouseA = Math.hypot(a.x - mouse.x, a.y - mouse.y);
@@ -445,6 +474,15 @@ updateActiveFromScroll();
   window.addEventListener("pointerleave", () => {
     mouse.x = -9999;
     mouse.y = -9999;
+  }, { passive: true });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      return;
+    }
+    if (!reduceMotion && !raf) raf = requestAnimationFrame(draw);
   }, { passive: true });
 
   resize();

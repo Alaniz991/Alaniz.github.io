@@ -16,7 +16,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap"
     rel="stylesheet"
   >
-  <link rel="icon" type="image/png" href="./img/logo.png">
+  <link rel="icon" type="image/png" href="./img/favicon.png">
 
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -31,13 +31,15 @@
       <a class="logo" href="#home" aria-label="AlanizMc home">
         <span class="logo-copy">
           <span class="logo-text">Alaniz<span class="mc-accent">Mc</span></span>
-          <span class="logo-subtitle">3D MODELER &amp; DEVELOPER</span>
+          <span class="logo-subtitle">MINECRAFT 3D ARTIST &amp; MODELER</span>
         </span>
       </a>
 
       <div class="nav-links">
-        <a href="#about" class="active">About Me</a>
+        <a href="#home" class="active">Home</a>
+        <a href="#about">About Me</a>
         <a href="#skills">Skills</a>
+        <a href="#services">Services</a>
         <a href="#projects">Projects</a>
         <a href="#showcase">Showcase</a>
         <a href="#process">Process</a>
@@ -46,7 +48,7 @@
       </div>
 
       <div class="studio-badge">
-        <img src="./img/logohydra.png" alt="Hydra Team logo">
+        <img decoding="async" src="./img/logohydra.png" alt="Hydra Team logo">
         <div class="studio-text">Owner of<br><b>Hydra Team</b></div>
       </div>
     </nav>
@@ -56,7 +58,7 @@
         <div class="hero-card hero-card-intro profile-card tilt-card">
           <div class="profile-copy">
             <div class="profile-name-row">
-              <img class="profile-brand-logo" src="./img/logo.png" alt="AlanizMc logo">
+              <img decoding="async" class="profile-brand-logo" src="./img/logo.png" alt="AlanizMc logo">
               <div>
                 <h2>Alaniz<span class="mc-accent">Mc</span></h2>
                 <p>3D Modeling <span>•</span> Textures <span>•</span> Pixel Art <span>•</span> VFX</p>
@@ -80,8 +82,9 @@
         </div>
 
         <p class="hero-text">
-          I create 3D models — items, weapons, entities, armor, blocks, and beyond — along with
-          textures, pixel art, and VFX for Minecraft, built for real players and real communities.
+          I create 3D models — from items, weapons, and armor to entities and blocks — along with
+          textures, pixel art, and VFX for Minecraft. My focus is on creating polished, functional assets
+          that fit naturally into the game.
         </p>
 
         <div class="hero-buttons">
@@ -97,7 +100,12 @@
 
           <div>
             <strong>200+</strong>
-            <span>Commissions completed successfully</span>
+            <span>Projects completed</span>
+          </div>
+
+          <div>
+            <strong>Java + Bedrock</strong>
+            <span>Platforms</span>
           </div>
         </div>
       </div>
@@ -107,9 +115,9 @@
         <div class="model-orbit model-orbit-right" aria-hidden="true"></div>
 
         <div class="model-stage">
-          <img class="model-render model-render-back model-render-green" src="./img/models/mannequin_v2.png" alt="Green crystal armor render">
-          <img class="model-render model-render-back model-render-red" src="./img/models/mannnequin (8).png" alt="Red demonic armor render">
-          <img class="model-render model-render-main" src="./img/models/mannnequinxs (5)(1).png" alt="Cyan fantasy armor render">
+          <img decoding="async" class="model-render model-render-back model-render-green" src="./img/models/mannequin_v2.png" alt="Green crystal armor render">
+          <img decoding="async" class="model-render model-render-back model-render-red" src="./img/models/mannnequin (8).png" alt="Red demonic armor render">
+          <img decoding="async" class="model-render model-render-main" src="./img/models/mannnequinxs (5)(1).png" alt="Cyan fantasy armor render" fetchpriority="high">
           <div class="model-stage-glow" aria-hidden="true"></div>
         </div>
 
@@ -120,16 +128,16 @@
   <main>
     <section id="about" class="section about reveal">
       <div class="about-image-slot">
-        <img class="about-render" src="./img/models/mannequin_v2_2.png" alt="Wither skeleton armor render">
+        <img decoding="async" class="about-render" src="./img/models/mannequin_v2_2.png" alt="Wither skeleton armor render" loading="lazy">
       </div>
 
       <div>
         <p class="section-tag">About Me</p>
         <p>
-          I’m a professional artist focused on creating visual content for Minecraft, with experience
-          in 3D modeling, texturing, and high-quality stylized design. I work diligently on each project
-          to ensure polished and functional results within the game. I’m always looking to improve my
-          skills, explore new techniques, and stay up-to-date with market trends.
+          I’m a Minecraft-focused 3D artist specializing in modeling, texturing, and stylized visual design.
+          I focus on creating polished, functional assets that fit naturally within the Minecraft environment.
+          Each project is built with attention to detail, optimization, and consistency, while always looking
+          for new techniques to improve my work.
         </p>
       </div>
     </section>
@@ -147,20 +155,58 @@
 
         <div class="skill-card">
           <span>02</span>
-          <h3>Deadline-Driven</h3>
-          <p>I’m used to working under deadlines, on projects large and small, always well optimized for use.</p>
+          <h3>Deadline-Focused</h3>
+          <p>I’m comfortable working under deadlines on projects of all sizes, while maintaining quality, organization,
+            and optimization throughout the process.</p>
         </div>
 
         <div class="skill-card">
           <span>03</span>
           <h3>Vanilla-Focused Design</h3>
-          <p>I focus purely on vanilla-style design — no realistic looks or high-resolution textures (64x64, 128x128, 256x256, etc.).</p>
+          <p>I focus on Minecraft-inspired, vanilla-style design, keeping shapes, proportions, and textures consistent
+            with the game’s visual language.</p>
         </div>
 
         <div class="skill-card">
           <span>04</span>
           <h3>Team Leadership</h3>
-          <p>I work well as a manager — I like leading, taking initiative, working with people, and making decisions.</p>
+          <p>I’m comfortable leading teams, taking initiative, coordinating projects, and making decisions when needed.
+            I value clear communication and an organized workflow.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section reveal">
+      <div class="section-heading">
+        <div>
+          <p class="section-tag">Services</p>
+          <h2>What I Can Create</h2>
+        </div>
+      </div>
+
+      <div class="services-grid">
+        <div class="skill-card">
+          <span>01</span>
+          <h3>3D Modeling</h3>
+          <p>Custom Minecraft models for weapons, armor, entities, items, and blocks, built with a clean and optimized structure.</p>
+        </div>
+
+        <div class="skill-card">
+          <span>02</span>
+          <h3>Texturing</h3>
+          <p>Vanilla-inspired textures and custom styles designed to keep the asset consistent with the Minecraft visual language.</p>
+        </div>
+
+        <div class="skill-card">
+          <span>03</span>
+          <h3>VFX &amp; Animation</h3>
+          <p>Custom visual effects and animations that add movement, personality, and impact to Minecraft assets.</p>
+        </div>
+
+        <div class="skill-card">
+          <span>04</span>
+          <h3>Custom Assets</h3>
+          <p>Complete assets created from concepts, references, or project requirements, from the initial idea to the final in-game result.</p>
         </div>
       </div>
     </section>
@@ -175,44 +221,44 @@
 
       <div class="projects-grid">
         <a class="project-card tilt-card" href="https://mcmodels.net/products/16418/demon-gaze-equipment?tab=reviews" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/demongaze.png" alt="Demon Gaze Equipment project cover">
+          <img decoding="async" class="portada" src="./img/portadas/demongaze.png" alt="Demon Gaze Equipment project cover" loading="lazy">
           <h3>Demon Gaze Equipment</h3>
           <p>Demonic-themed equipment set available on MCModels.</p>
           <span>Available on MCModels</span>
         </a>
 
         <a class="project-card tilt-card" href="https://mcmodels.net/products/15517/heavy-iron-equipment" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/heavy.png" alt="Heavy Iron Equipment project cover">
+          <img decoding="async" class="portada" src="./img/portadas/heavy.png" alt="Heavy Iron Equipment project cover" loading="lazy">
           <h3>Heavy Iron Equipment</h3>
-          <p>The forges of the Hydra Team open, revealing the Heavy Iron Equipment Pack, available on MCModels.</p>
+          <p>Heavy iron-themed equipment set featuring custom armor and weapons designed for Minecraft.</p>
           <span>Available on MCModels</span>
         </a>
 
         <a class="project-card tilt-card" href="https://mcmodels.net/products/14512/abyss-knight-weaponry" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/abyss.png" alt="Abyss Knight Weaponry project cover">
+          <img decoding="async" class="portada" src="./img/portadas/abyss.png" alt="Abyss Knight Weaponry project cover" loading="lazy">
           <h3>Abyss Knight Weaponry</h3>
-          <p>Abyss-themed equipment and weaponry set available on MCModels.</p>
+          <p>Dark fantasy weapon set inspired by the Abyss, designed with a strong Minecraft aesthetic.</p>
           <span>Available on MCModels</span>
         </a>
 
         <a class="project-card tilt-card" href="https://mcmodels.net/products/14313/eternal-weapons-and-armor-set" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/eternal.png" alt="Eternal Weapons and Armor Set project cover">
+          <img decoding="async" class="portada" src="./img/portadas/eternal.png" alt="Eternal Weapons and Armor Set project cover" loading="lazy">
           <h3>Eternal Weapons and Armor Set</h3>
-          <p>Mystical-themed equipment set with animations, available on MCModels.</p>
+          <p>Mystical-themed equipment set featuring custom armor, weapons, and animations.</p>
           <span>Available on MCModels</span>
         </a>
 
         <a class="project-card tilt-card" href="https://mcmodels.net/products/14201/void-colossus-pack" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/void.png" alt="Void Colossus Pack project cover">
+          <img decoding="async" class="portada" src="./img/portadas/void.png" alt="Void Colossus Pack project cover" loading="lazy">
           <h3>Void Colossus Pack</h3>
-          <p>Void-themed equipment pack available on MCModels.</p>
+          <p>Void-themed equipment pack featuring custom armor and weapons for Minecraft.</p>
           <span>Available on MCModels</span>
         </a>
 
         <a class="project-card tilt-card" href="https://mcmodels.net/products/14202/heartflame-pack?tab=reviews" target="_blank" rel="noopener noreferrer">
-          <img class="portada" src="./img/portadas/heart.png" alt="HeartFlame Pack project cover">
+          <img decoding="async" class="portada" src="./img/portadas/heart.png" alt="HeartFlame Pack project cover" loading="lazy">
           <h3>HeartFlame</h3>
-          <p>Flame-crystal-themed equipment pack available on MCModels.</p>
+          <p>Flame-crystal-themed equipment pack featuring custom armor and weapons.</p>
           <span>Available on MCModels</span>
         </a>
       </div>
@@ -227,58 +273,80 @@
       </div>
 
       <p class="section-intro">
-        A visual gallery for selected work, previews, and project highlights.
+        A selection of models, weapons, armor, entities, and custom Minecraft assets.
       </p>
 
-      <div class="showcase-tabs" role="tablist" aria-label="Showcase categories">
-        <button class="showcase-tab active" type="button" role="tab" aria-selected="true" data-category="all">All</button>
-        <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="weapons">Weapons &amp; Items</button>
-        <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="armor">Armor &amp; Entities</button>
-        <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="blocks">Blocks &amp; Builds</button>
-        <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="textures">Textures &amp; VFX</button>
+      <!-- Compact showcase: the selected work continuously scrolls as a ribbon. -->
+      <div class="showcase-marquee" aria-label="Featured showcase items">
+        <div class="showcase-track" id="showcase-track"></div>
       </div>
 
-      <div class="showcase-grid">
-        <button class="showcase-card" type="button" data-category="weapons" data-showcase-title="Showcase 01" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 01">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 01">
-          <span>Showcase 01</span>
+      <div class="showcase-more-wrap">
+        <button class="showcase-more-button" id="showcase-more" type="button" aria-expanded="false" aria-controls="showcase-expanded">
+          <span>View More</span>
+          <span aria-hidden="true">+</span>
         </button>
-        <button class="showcase-card" type="button" data-category="armor" data-showcase-title="Showcase 02" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 02">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 02">
-          <span>Showcase 02</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="blocks" data-showcase-title="Showcase 03" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 03">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 03">
-          <span>Showcase 03</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="textures" data-showcase-title="Showcase 04" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 04">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 04">
-          <span>Showcase 04</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="weapons" data-showcase-title="Showcase 05" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 05">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 05">
-          <span>Showcase 05</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="armor" data-showcase-title="Showcase 06" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 06">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 06">
-          <span>Showcase 06</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="blocks" data-showcase-title="Showcase 07" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 07">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 07">
-          <span>Showcase 07</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="textures" data-showcase-title="Showcase 08" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 08">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 08">
-          <span>Showcase 08</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="weapons" data-showcase-title="Showcase 09" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 09">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 09">
-          <span>Showcase 09</span>
-        </button>
-        <button class="showcase-card" type="button" data-category="armor" data-showcase-title="Showcase 10" data-showcase-image="./img/logohydra.png" aria-label="Open Showcase 10">
-          <img src="./img/logohydra.png" alt="Hydra Team logo placeholder for Showcase 10">
-          <span>Showcase 10</span>
-        </button>
+      </div>
+
+      <!-- Expanded showcase: hidden until requested, keeping the page compact. -->
+      <div class="showcase-expanded" id="showcase-expanded" hidden>
+        <div class="showcase-tabs" role="tablist" aria-label="Showcase categories">
+          <button class="showcase-tab active" type="button" role="tab" aria-selected="true" data-category="all">All</button>
+          <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="armor">Armor</button>
+          <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="entities">Entities</button>
+          <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="tools">Tools</button>
+          <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="weapons">Weapons</button>
+          <button class="showcase-tab" type="button" role="tab" aria-selected="false" data-category="sets">Sets</button>
+        </div>
+
+        <div class="showcase-grid">
+          <button class="showcase-card" type="button" data-category="armor" data-showcase-title="Armor Showcase 01" data-showcase-image="./img/logohydra.png" aria-label="Open Armor Showcase 01">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft armor showcase preview">
+            <span>Armor Showcase 01</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="entities" data-showcase-title="Entity Showcase 02" data-showcase-image="./img/logohydra.png" aria-label="Open Entity Showcase 02">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft entity showcase preview">
+            <span>Entity Showcase 02</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="tools" data-showcase-title="Tool Showcase 03" data-showcase-image="./img/logohydra.png" aria-label="Open Tool Showcase 03">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft tool showcase preview">
+            <span>Tool Showcase 03</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="weapons" data-showcase-title="Weapon Showcase 04" data-showcase-image="./img/logohydra.png" aria-label="Open Weapon Showcase 04">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft weapon showcase preview">
+            <span>Weapon Showcase 04</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="sets" data-showcase-title="Set Showcase 05" data-showcase-image="./img/logohydra.png" aria-label="Open Set Showcase 05">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft equipment set showcase preview">
+            <span>Set Showcase 05</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="armor" data-showcase-title="Armor Showcase 06" data-showcase-image="./img/logohydra.png" aria-label="Open Armor Showcase 06">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft armor showcase preview">
+            <span>Armor Showcase 06</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="entities" data-showcase-title="Entity Showcase 07" data-showcase-image="./img/logohydra.png" aria-label="Open Entity Showcase 07">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft entity showcase preview">
+            <span>Entity Showcase 07</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="tools" data-showcase-title="Tool Showcase 08" data-showcase-image="./img/logohydra.png" aria-label="Open Tool Showcase 08">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft tool showcase preview">
+            <span>Tool Showcase 08</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="weapons" data-showcase-title="Weapon Showcase 09" data-showcase-image="./img/logohydra.png" aria-label="Open Weapon Showcase 09">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft weapon showcase preview">
+            <span>Weapon Showcase 09</span>
+          </button>
+          <button class="showcase-card" type="button" data-category="sets" data-showcase-title="Set Showcase 10" data-showcase-image="./img/logohydra.png" aria-label="Open Set Showcase 10">
+            <img decoding="async" src="./img/logohydra.png" loading="lazy" alt="Minecraft equipment set showcase preview">
+            <span>Set Showcase 10</span>
+          </button>
+        </div>
+
+        <div class="showcase-collapse-wrap">
+          <button class="showcase-collapse-button" id="showcase-collapse" type="button" aria-controls="showcase-expanded">
+            Hide Categories <span aria-hidden="true">−</span>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -290,30 +358,33 @@
         <div>
           <span></span>
           <h3>Reference & Concept</h3>
-          <p>I gather extra references beyond the ones provided, work out a color palette that fits the model's theme, and sketch before starting the build.</p>
+          <p>I gather additional references, establish a color palette that fits the model’s theme, and create a clear
+            concept before starting the build.</p>
         </div>
 
         <div>
           <span></span>
           <h3>3D Modeling</h3>
-          <p>I start the 3D modeling, keeping folders and UVs well organized to avoid issues later during texturing.</p>
+          <p>I build the model in Blockbench, keeping the structure, folders, and UVs organized to make the texturing
+            process clean and efficient.</p>
         </div>
 
         <div>
           <span></span>
           <h3>Texturing & Optimization</h3>
-          <p>I texture following a vanilla style, cube by cube, leaving no empty faces. If needed, I finish by optimizing the texture to keep it lightweight.</p>
+          <p>I texture each model with a vanilla-inspired approach, paying attention to every face and detail. When
+            necessary, I optimize the final asset to keep it lightweight and efficient in-game.</p>
         </div>
       </div>
     </section>
 
     <section id="contact" class="section contact reveal">
       <p class="section-tag">Get In Touch</p>
-      <h2>Let’s create something players will remember.</h2>
+      <h2>Let’s turn your ideas into something players will remember.</h2>
 
       <p>
-        Available for Minecraft projects, 3D modeling, textures, VFX, collaborations, and creative work.
-        If you have an idea, feel free to reach out directly.
+        I’m available for Minecraft projects, 3D modeling, texturing, VFX, collaborations, and custom asset creation.
+        If you have a project in mind, feel free to reach out.
       </p>
 
       <div class="contact-links">
@@ -325,7 +396,7 @@
   </main>
 
   <footer>
-    <p>© 2026 AlanizMc. 3D Modeler & Minecraft Developer.</p>
+    <p>© 2026 AlanizMc. Minecraft 3D Artist & Modeler.</p>
   </footer>
 
   <div class="music-control" aria-label="Background music controls">
